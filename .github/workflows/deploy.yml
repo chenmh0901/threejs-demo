@@ -1,15 +1,23 @@
 name: Build three.js
-
 on: [push]
+
+permissions:
+  contents: write
 
 jobs:
   npm-build:
     name: npm-build工作
     runs-on: ubuntu-latest
+    
     steps:
       - name: 读取仓库内容
         uses: actions/checkout@v4
-      - name: 安装依赖
-        run: npm install
-      - name : 项目构建
-        run: npm run build
+      - name: 安装依赖和项目打包
+        run: | 
+          npm install
+          npm run build
+      - name: 部署到gh-pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          branch: gh-pages
+          folder: dist
